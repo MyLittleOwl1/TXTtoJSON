@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Convertidor TXT/CSV a JSON</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Convertidor TXT/CSV a JSON</h1>
+        
+        <div class="description">
+            <p>Carga archivos .txt o .csv y conviértelos a formato JSON. La aplicación detecta automáticamente el tipo de archivo y sugiere la mejor configuración.</p>
+        </div>
+        
+        <div class="upload-section">
+            <h3>📁 Selecciona un archivo</h3>
+            <input type="file" id="fileInput" class="file-input" accept=".txt,.csv">
+            <label for="fileInput" class="file-label">
+                <span class="icon">📂</span> Seleccionar archivo
+            </label>
+            <div id="fileName" class="file-name">Ningún archivo seleccionado</div>
+            <div class="supported-formats">Formatos admitidos: .txt, .csv</div>
+        </div>
+        
+        <div class="options">
+            <h3>⚙️ Opciones de conversión</h3>
+            
+            <div class="option-group">
+                <label for="jsonType">Estructura del JSON:</label>
+                <select id="jsonType">
+                    <option value="object">Objeto con líneas numeradas</option>
+                    <option value="array">Array de líneas</option>
+                    <option value="keyValue">Pares clave-valor</option>
+                    <option value="objectWithHeaders" selected>Objeto con encabezados</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <label for="rootName">Nombre del objeto raíz (opcional):</label>
+                <input type="text" id="rootName" placeholder="Ej: datos, registros, contenido">
+            </div>
+            
+            <div class="option-group">
+                <label>Opciones de encabezados:</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="hasHeaders" checked>
+                    <label for="hasHeaders">La primera línea contiene encabezados</label>
+                </div>
+                
+                <div id="delimiterOptions" style="display: block; margin-top: 15px;">
+                    <label>Delimitador de columnas:</label>
+                    <div class="delimiter-group">
+                        <div class="delimiter-row">
+                            <div class="delimiter-option">
+                                <input type="radio" id="delimiterComma" name="delimiter" value="," checked>
+                                <label for="delimiterComma">Coma (,)</label>
+                            </div>
+                            <div class="delimiter-option">
+                                <input type="radio" id="delimiterSemicolon" name="delimiter" value=";">
+                                <label for="delimiterSemicolon">Punto y coma (;)</label>
+                            </div>
+                        </div>
+                        <div class="delimiter-row">
+                            <div class="delimiter-option">
+                                <input type="radio" id="delimiterTab" name="delimiter" value="\t">
+                                <label for="delimiterTab">Tabulación</label>
+                            </div>
+                            <div class="delimiter-option">
+                                <input type="radio" id="delimiterPipe" name="delimiter" value="|">
+                                <label for="delimiterPipe">Pipe (|)</label>
+                            </div>
+                        </div>
+                        <div class="custom-delimiter-container">
+                            <div class="delimiter-option">
+                                <input type="radio" id="delimiterCustom" name="delimiter" value="custom">
+                                <label for="delimiterCustom">Otro:</label>
+                            </div>
+                            <input type="text" id="customDelimiter" maxlength="3" placeholder="Ej: :">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="examples">
+                <h4>📋 Ejemplos de uso</h4>
+                <div class="example-tabs">
+                    <div class="example-tab active" data-example="csv">CSV</div>
+                    <div class="example-tab" data-example="txt">TXT con tabla</div>
+                    <div class="example-tab" data-example="txt-simple">TXT simple</div>
+                </div>
+                
+                <div class="example-content">
+                    <div id="example-csv" class="example-pane">
+                        <p><strong>CSV con encabezados:</strong></p>
+                        <pre>Nombre,Edad,Ciudad
+Juan,30,Madrid
+María,25,Barcelona</pre>
+                    </div>
+                    
+                    <div id="example-txt" class="example-pane" style="display: none;">
+                        <p><strong>TXT con encabezados:</strong></p>
+                        <pre>Nombre	Edad	Ciudad
+Juan	30	Madrid
+María	25	Barcelona</pre>
+                    </div>
+                    
+                    <div id="example-txt-simple" class="example-pane" style="display: none;">
+                        <p><strong>TXT simple:</strong></p>
+                        <pre>Línea 1
+Línea 2
+Línea 3</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-box">
+                <div class="preview-title">📝 Contenido original</div>
+                <div id="txtPreview" class="preview-content">El contenido aparecerá aquí...</div>
+            </div>
+            
+            <div class="preview-box">
+                <div class="preview-title">📊 Resultado JSON</div>
+                <div id="jsonPreview" class="preview-content json-output">La salida JSON aparecerá aquí...</div>
+            </div>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="button-group">
+            <button id="convertBtn" class="convert-btn" disabled>
+                <span class="icon">🔄</span> Convertir a JSON
+            </button>
+            <button id="downloadBtn" class="download-btn" disabled>
+                <span class="icon">💾</span> Descargar JSON
+            </button>
+            <button id="resetBtn" class="reset-btn">
+                <span class="icon">🗑️</span> Limpiar todo
+            </button>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
